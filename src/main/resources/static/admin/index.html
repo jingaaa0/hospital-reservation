@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="늘봄의원 관리자 문의 관리">
+  <title>문의 관리 | 늘봄의원 관리자</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+  <main class="admin-layout">
+    <aside class="sidebar">
+      <a class="brand" href="/">늘봄의원 <span>관리자</span></a>
+      <nav aria-label="관리자 메뉴">
+        <a class="nav-item active" href="/admin/">1:1 문의 관리</a>
+        <span class="nav-item disabled">예약 관리 <small>준비 중</small></span>
+      </nav>
+      <a class="back-link" href="/">← 랜딩페이지 보기</a>
+    </aside>
+
+    <section class="content">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">문의 관리</p>
+          <h1>1:1 문의 목록</h1>
+          <p>접수된 문의를 확인하고 처리 상태를 변경하세요.</p>
+        </div>
+        <button id="refresh-button" type="button">새로고침</button>
+      </header>
+
+      <section class="summary" aria-label="문의 현황">
+        <article><span>전체 문의</span><strong id="total-count">0</strong></article>
+        <article><span>접수됨</span><strong id="received-count">0</strong></article>
+        <article><span>처리 중</span><strong id="progress-count">0</strong></article>
+        <article><span>답변 완료</span><strong id="answered-count">0</strong></article>
+      </section>
+
+      <section class="inquiry-panel" aria-labelledby="inquiry-list-title">
+        <div class="panel-heading"><h2 id="inquiry-list-title">최근 문의</h2><p id="list-message" role="status"></p></div>
+        <div id="inquiry-list" class="inquiry-list" aria-live="polite"></div>
+      </section>
+    </section>
+  </main>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

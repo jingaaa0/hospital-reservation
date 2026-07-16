@@ -6,12 +6,33 @@ const statusLabels = {
 
 const inquiryList = document.getElementById('inquiry-list');
 const listMessage = document.getElementById('list-message');
+const previousPage = document.getElementById('previous-page');
+const nextPage = document.getElementById('next-page');
+const pageInfo = document.getElementById('page-info');
+let currentPage = 0;
 const counts = {
   total: document.getElementById('total-count'),
   received: document.getElementById('received-count'),
   progress: document.getElementById('progress-count'),
   answered: document.getElementById('answered-count')
 };
+
+function getCookie(name) {
+  const cookie = document.cookie.split('; ').find((item) => item.startsWith(`${name}=`));
+  return cookie ? decodeURIComponent(cookie.substring(name.length + 1)) : '';
+}
+
+function csrfHeaders() {
+  const token = getCookie('XSRF-TOKEN');
+  return token ? { 'X-XSRF-TOKEN': token } : {};
+}
+
+function ensureAuthenticated(response) {
+  if (response.redirected && new URL(response.url).pathname === '/admin/login') {
+    window.location.assign(response.url);
+    throw new Error('로그인이 필요합니다.');
+  }
+}
 
 function formatDateTime(value) {
   return new Intl.DateTimeFormat('ko-KR', {
@@ -43,11 +64,11 @@ function createStatusSelect(status) {
   return select;
 }
 
-function updateSummary(inquiries) {
-  counts.total.textContent = inquiries.length;
-  counts.received.textContent = inquiries.filter((inquiry) => inquiry.status === 'RECEIVED').length;
-  counts.progress.textContent = inquiries.filter((inquiry) => inquiry.status === 'IN_PROGRESS').length;
-  counts.answered.textContent = inquiries.filter((inquiry) => inquiry.status === 'ANSWERED').length;
+function updateSummary(result) {
+  counts.total.textContent = result.totalElements;
+  counts.received.textContent = result.receivedCount;
+  counts.progress.textContent = result.inProgressCount;
+  counts.answered.textContent = result.answeredCount;
 }
 
 async function saveStatus(inquiryId, status, button) {
@@ -56,9 +77,10 @@ async function saveStatus(inquiryId, status, button) {
   try {
     const response = await fetch(`/api/admin/inquiries/${inquiryId}/status`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
       body: JSON.stringify({ status })
     });
+    ensureAuthenticated(response);
     if (!response.ok) throw new Error('상태 변경에 실패했습니다.');
     await loadInquiries('상태를 변경했습니다.');
   } catch (error) {
@@ -71,7 +93,6 @@ async function saveStatus(inquiryId, status, button) {
 
 function renderInquiries(inquiries) {
   inquiryList.replaceChildren();
-  updateSummary(inquiries);
   if (inquiries.length === 0) {
     const empty = document.createElement('p');
     empty.className = 'empty';
@@ -125,11 +146,17 @@ async function loadInquiries(message = '') {
   listMessage.className = '';
   listMessage.textContent = '불러오는 중…';
   try {
-    const response = await fetch('/api/admin/inquiries');
+    const response = await fetch(`/api/admin/inquiries?page=${currentPage}&size=20`);
+    ensureAuthenticated(response);
     if (!response.ok) throw new Error('문의 목록을 불러오지 못했습니다.');
-    const inquiries = await response.json();
-    renderInquiries(inquiries);
-    listMessage.textContent = message || `총 ${inquiries.length}건`;
+    const result = await response.json();
+    currentPage = result.page;
+    renderInquiries(result.items);
+    updateSummary(result);
+    listMessage.textContent = message || `총 ${result.totalElements}건`;
+    pageInfo.textContent = result.totalPages === 0 ? '0 / 0' : `${result.page + 1} / ${result.totalPages}`;
+    previousPage.disabled = result.page <= 0;
+    nextPage.disabled = result.page + 1 >= result.totalPages;
   } catch (error) {
     listMessage.className = 'error';
     listMessage.textContent = error.message;
@@ -137,4 +164,10 @@ async function loadInquiries(message = '') {
 }
 
 document.getElementById('refresh-button').addEventListener('click', () => loadInquiries());
+previousPage.addEventListener('click', () => { currentPage -= 1; loadInquiries(); });
+nextPage.addEventListener('click', () => { currentPage += 1; loadInquiries(); });
+document.getElementById('logout-button').addEventListener('click', async () => {
+  const response = await fetch('/admin/logout', { method: 'POST', headers: csrfHeaders() });
+  window.location.assign(response.redirected ? response.url : '/admin/login?logout');
+});
 loadInquiries();

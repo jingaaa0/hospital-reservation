@@ -10,4 +10,14 @@ public class AdminPageController {
     public String adminPage() {
         return "forward:/admin/index.html";
     }
+
+    @GetMapping("/admin/login")
+    public String loginPage() {
+        return "admin/login";
+    }
+
+    @GetMapping("/admin/reservations")
+    public String reservationPage() {
+        return "forward:/admin/reservations.html";
+    }
 }

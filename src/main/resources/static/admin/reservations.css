@@ -1,0 +1,40 @@
+.reservation-content { max-width: 1500px; }
+.filter-panel { display: grid; grid-template-columns: repeat(6, minmax(130px, 1fr)); gap: 14px; align-items: end; margin: 36px 0 24px; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: #fff; box-shadow: 0 5px 16px rgba(23, 67, 91, .05); }
+.filter-panel label { display: grid; gap: 7px; color: var(--muted); font-size: .82rem; font-weight: 800; }
+.filter-panel select, .filter-panel input { width: 100%; min-width: 0; padding: 11px; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--ink); font: inherit; }
+.filter-actions { display: flex; grid-column: 1 / -1; justify-content: flex-end; gap: 8px; }
+.filter-actions button { padding: 10px 18px; border: 1px solid var(--line); border-radius: 9px; color: var(--navy); background: #fff; font-weight: 800; }
+.filter-actions .apply-filter { border-color: var(--navy); color: #fff; background: var(--navy); }
+.reservation-panel { overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; min-width: 1000px; border-collapse: collapse; }
+th { padding: 14px 18px; color: var(--muted); background: #f7fafb; font-size: .8rem; text-align: left; }
+td { padding: 19px 18px; border-top: 1px solid var(--line); vertical-align: top; }
+.primary { margin: 0 0 5px; font-weight: 900; }
+.secondary { margin: 3px 0; color: var(--muted); font-size: .82rem; }
+.detail-button { min-width: 90px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--navy); background: #fff; font-weight: 800; }
+.detail-button.has-content { border-color: #a9cfe0; background: #f1f9fc; }
+.status-control { display: flex; align-items: center; min-width: 250px; gap: 8px; }
+.status-control select { flex: 1; min-width: 125px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.status-control button { flex: 0 0 auto; padding: 8px 12px; border: 0; border-radius: 8px; color: #fff; background: var(--navy); font-weight: 800; white-space: nowrap; }
+.empty-row td { padding: 70px 20px; color: var(--muted); text-align: center; }
+.pagination { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 18px; border-top: 1px solid var(--line); }
+.pagination button { padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px; color: var(--navy); background: #fff; font-weight: 800; }
+.pagination button:disabled { cursor: not-allowed; opacity: .4; }
+.reservation-dialog { width: min(560px, calc(100% - 32px)); padding: 0; border: 0; border-radius: 16px; color: var(--ink); box-shadow: 0 24px 70px rgba(17, 48, 65, .28); }
+.reservation-dialog::backdrop { background: rgba(12, 35, 48, .58); }
+.reservation-dialog, .reservation-dialog form { padding: 24px; }
+.reservation-dialog form { padding: 0; }
+.dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.dialog-heading h2 { margin: 0; font-size: 1.35rem; }
+.dialog-close { padding: 4px 9px; border: 0; color: var(--muted); background: transparent; font-size: 1.7rem; line-height: 1; }
+.dialog-patient { margin: 10px 0 20px; color: var(--muted); font-size: .9rem; }
+.dialog-content { min-height: 100px; margin: 0; padding: 16px; border-radius: 10px; background: #f4f8fa; line-height: 1.65; white-space: pre-wrap; word-break: break-word; }
+.reservation-dialog label { display: block; margin-bottom: 8px; font-size: .9rem; font-weight: 800; }
+.reservation-dialog textarea { width: 100%; resize: vertical; padding: 13px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); font: inherit; line-height: 1.55; }
+.dialog-message { min-height: 1.3em; margin: 10px 0 0; color: #bd3c3c; font-size: .88rem; font-weight: 700; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+.dialog-actions button { padding: 10px 16px; border: 1px solid var(--line); border-radius: 9px; color: var(--navy); background: #fff; font-weight: 800; }
+.dialog-actions .primary-action { border-color: var(--navy); color: #fff; background: var(--navy); }
+@media (max-width: 1200px) { .filter-panel { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px) { .filter-panel { grid-template-columns: 1fr 1fr; }.filter-actions { grid-column: 1 / -1; }.page-header { flex-direction: column; } }

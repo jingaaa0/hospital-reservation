@@ -72,13 +72,26 @@
     </form>
   </dialog>
 
-  <dialog id="reservation-dialog" class="dialog" aria-labelledby="reservation-title">
+  <dialog id="reservation-dialog" class="dialog reservation-dialog" aria-labelledby="reservation-title">
     <button class="close-button" type="button" data-close aria-label="닫기">×</button>
-    <p class="dialog-kicker">진료 예약</p>
-    <h2 id="reservation-title">편한 시간에<br>예약하세요.</h2>
-    <form id="reservation-form" class="form-grid">
+    <div class="reservation-scroll-content">
+      <p class="dialog-kicker">진료 예약</p>
+      <h2 id="reservation-title">편한 시간에<br>예약하세요.</h2>
+      <form id="reservation-form" class="form-grid">
       <label>이름<input name="name" autocomplete="name" required></label>
       <label>전화번호<input name="phoneNumber" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" pattern="010-[0-9]{4}-[0-9]{4}" maxlength="13" title="010-0000-0000 형식으로 입력해 주세요." required></label>
+      <div class="form-two-columns">
+        <label>진료과
+          <select id="reservation-department" name="department" required>
+            <option value="">진료과를 불러오는 중입니다</option>
+          </select>
+        </label>
+        <label>의료진
+          <select id="reservation-doctor" name="doctorId" required disabled>
+            <option value="">진료과를 먼저 선택해 주세요</option>
+          </select>
+        </label>
+      </div>
       <div class="form-two-columns">
         <div class="date-field">
           <span class="field-label">날짜</span>
@@ -94,13 +107,15 @@
             <div id="calendar-grid" class="calendar-grid" role="grid" aria-label="예약 날짜 선택"></div>
           </div>
         </div>
-        <label>시간대<select id="reservation-time-slot" name="timeSlot" required disabled><option value="">날짜를 먼저 선택해 주세요</option></select></label>
+        <label>시간대<select id="reservation-time-slot" name="appointmentTime" required disabled><option value="">날짜를 먼저 선택해 주세요</option></select></label>
       </div>
       <p id="schedule-message" class="field-hint" aria-live="polite">일요일은 휴진입니다.</p>
-      <label>기타 건의사항<textarea name="note" rows="3" placeholder="진료 시 참고할 내용을 적어주세요."></textarea></label>
+      <label>증상<textarea name="symptom" rows="3" maxlength="2000" placeholder="현재 불편한 증상을 적어주세요."></textarea></label>
+      <label class="checkbox-label"><input name="privacyAgreed" type="checkbox" required> 개인정보 수집 및 이용에 동의합니다.</label>
       <p class="form-message" aria-live="polite"></p>
-      <button class="submit-button" type="submit">예약 신청하기</button>
-    </form>
+        <button class="submit-button" type="submit">예약 신청하기</button>
+      </form>
+    </div>
   </dialog>
 
   <script src="/app.js"></script>

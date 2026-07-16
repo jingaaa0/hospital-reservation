@@ -13,7 +13,7 @@
       <a class="brand" href="/">늘봄의원 <span>관리자</span></a>
       <nav aria-label="관리자 메뉴">
         <a class="nav-item active" href="/admin/">1:1 문의 관리</a>
-        <span class="nav-item disabled">예약 관리 <small>준비 중</small></span>
+        <a class="nav-item" href="/admin/reservations">예약 관리</a>
       </nav>
       <a class="back-link" href="/">← 랜딩페이지 보기</a>
     </aside>
@@ -25,7 +25,10 @@
           <h1>1:1 문의 목록</h1>
           <p>접수된 문의를 확인하고 처리 상태를 변경하세요.</p>
         </div>
-        <button id="refresh-button" type="button">새로고침</button>
+        <div class="header-actions">
+          <button id="refresh-button" type="button">새로고침</button>
+          <button id="logout-button" class="logout-button" type="button">로그아웃</button>
+        </div>
       </header>
 
       <section class="summary" aria-label="문의 현황">
@@ -38,6 +41,11 @@
       <section class="inquiry-panel" aria-labelledby="inquiry-list-title">
         <div class="panel-heading"><h2 id="inquiry-list-title">최근 문의</h2><p id="list-message" role="status"></p></div>
         <div id="inquiry-list" class="inquiry-list" aria-live="polite"></div>
+        <nav class="pagination" aria-label="문의 목록 페이지">
+          <button id="previous-page" type="button">이전</button>
+          <span id="page-info">0 / 0</span>
+          <button id="next-page" type="button">다음</button>
+        </nav>
       </section>
     </section>
   </main>

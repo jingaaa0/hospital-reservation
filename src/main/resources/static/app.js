@@ -1,6 +1,8 @@
 const dialogs = document.querySelectorAll('dialog');
 const reservationDateInput = document.getElementById('reservation-date');
 const reservationTimeSlot = document.getElementById('reservation-time-slot');
+const reservationDepartment = document.getElementById('reservation-department');
+const reservationDoctor = document.getElementById('reservation-doctor');
 const scheduleMessage = document.getElementById('schedule-message');
 const calendarToggle = document.getElementById('calendar-toggle');
 const calendarPicker = document.getElementById('calendar-picker');
@@ -11,6 +13,56 @@ const calendarNext = document.getElementById('calendar-next');
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 let calendarCursor = new Date(today.getFullYear(), today.getMonth(), 1);
+
+function resetDoctorOptions(message = '진료과를 먼저 선택해 주세요') {
+  reservationDoctor.replaceChildren(new Option(message, ''));
+  reservationDoctor.disabled = true;
+}
+
+async function loadDepartments() {
+  reservationDepartment.disabled = true;
+  try {
+    const response = await fetch('/api/departments');
+    if (!response.ok) throw new Error();
+    const departments = await response.json();
+    reservationDepartment.replaceChildren(new Option('진료과를 선택해 주세요', ''));
+    departments.forEach((department) => {
+      reservationDepartment.add(new Option(department.name, department.code));
+    });
+    reservationDepartment.disabled = departments.length === 0;
+    if (departments.length === 0) {
+      reservationDepartment.replaceChildren(new Option('등록된 진료과가 없습니다', ''));
+    }
+  } catch (error) {
+    reservationDepartment.replaceChildren(new Option('진료과를 불러오지 못했습니다', ''));
+  }
+}
+
+async function updateDoctorOptions() {
+  const department = reservationDepartment.value;
+  if (!department) {
+    resetDoctorOptions();
+    return;
+  }
+
+  resetDoctorOptions('의료진을 불러오는 중입니다');
+  try {
+    const response = await fetch(`/api/doctors?department=${encodeURIComponent(department)}`);
+    if (!response.ok) throw new Error();
+    const doctors = await response.json();
+    reservationDoctor.replaceChildren(new Option('의료진을 선택해 주세요', ''));
+    doctors.forEach((doctor) => reservationDoctor.add(new Option(doctor.name, doctor.doctorId)));
+    reservationDoctor.disabled = doctors.length === 0;
+    if (doctors.length === 0) {
+      resetDoctorOptions('등록된 의료진이 없습니다');
+    }
+  } catch (error) {
+    resetDoctorOptions('의료진을 불러오지 못했습니다');
+  }
+}
+
+reservationDepartment.addEventListener('change', updateDoctorOptions);
+loadDepartments();
 
 function formatLocalDate(date) {
   const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60_000);
@@ -185,6 +237,7 @@ async function submitForm(form, endpoint) {
     message.textContent = body.message;
     form.reset();
     if (endpoint.includes('reservations')) {
+      resetDoctorOptions();
       calendarToggle.textContent = '날짜를 선택해 주세요';
       calendarCursor = new Date(today.getFullYear(), today.getMonth(), 1);
       updateAvailableTimeSlots();

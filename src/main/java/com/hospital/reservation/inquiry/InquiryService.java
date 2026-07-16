@@ -1,11 +1,12 @@
 package com.hospital.reservation.inquiry;
 
 import com.hospital.reservation.common.PhoneNumberNormalizer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -31,10 +32,23 @@ public class InquiryService {
     }
 
     @Transactional(readOnly = true)
-    public List<InquirySummaryResponse> findAll() {
-        return inquiryRepository.findAllByOrderByCreatedAtDesc().stream()
-                .map(InquirySummaryResponse::from)
-                .toList();
+    public InquiryPageResponse findAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(
+                Math.max(page, 0),
+                Math.clamp(size, 1, 100),
+                Sort.by(Sort.Direction.DESC, "createdAt", "id")
+        );
+        Page<Inquiry> inquiries = inquiryRepository.findAll(pageRequest);
+        return new InquiryPageResponse(
+                inquiries.getContent().stream().map(InquirySummaryResponse::from).toList(),
+                inquiries.getNumber(),
+                inquiries.getSize(),
+                inquiries.getTotalElements(),
+                inquiries.getTotalPages(),
+                inquiryRepository.countByStatus(InquiryStatus.RECEIVED),
+                inquiryRepository.countByStatus(InquiryStatus.IN_PROGRESS),
+                inquiryRepository.countByStatus(InquiryStatus.ANSWERED)
+        );
     }
 
     @Transactional

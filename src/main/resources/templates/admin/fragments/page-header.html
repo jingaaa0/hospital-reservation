@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <header class="page-header" th:fragment="pageHeader(eyebrow, title, description)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="늘봄의원 관리자 예약 관리">
+  <title th:text="${eyebrow}">관리 | 늘봄의원 관리자</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+  <link rel="stylesheet" href="/admin/reservations.css">
+</head>
+<body>
+    <div>
+      <p class="eyebrow" th:text="${eyebrow}">관리</p>
+      <h1 th:text="${title}">관리 목록</h1>
+      <p th:text="${description}">목록을 관리하세요.</p>
+    </div>
+    <div class="header-actions">
+      <button id="refresh-button" type="button">새로고침</button>
+      <button id="logout-button" class="logout-button" type="button">로그아웃</button>
+    </div>
+  </header>
+</body>
+</html>

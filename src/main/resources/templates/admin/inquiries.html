@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+  <main class="admin-layout">
+    <aside th:replace="~{admin/fragments/sidebar :: sidebar('inquiries')}"></aside>
+
+    <section class="content">
+      <header th:replace="~{admin/fragments/page-header :: pageHeader(
+        '문의 관리',
+        '1:1 문의 목록',
+        '접수된 문의를 확인하고 처리 상태를 변경하세요.'
+      )}"></header>
+
+      <section class="summary" aria-label="문의 현황">
+        <article><span>전체 문의</span><strong id="total-count">0</strong></article>
+        <article><span>접수됨</span><strong id="received-count">0</strong></article>
+        <article><span>처리 중</span><strong id="progress-count">0</strong></article>
+        <article><span>답변 완료</span><strong id="answered-count">0</strong></article>
+      </section>
+
+      <section class="inquiry-panel" aria-labelledby="inquiry-list-title">
+        <div class="panel-heading"><h2 id="inquiry-list-title">최근 문의</h2><p id="list-message" role="status"></p></div>
+        <div id="inquiry-list" class="inquiry-list" aria-live="polite"></div>
+        <nav class="pagination" aria-label="문의 목록 페이지">
+          <button id="previous-page" type="button">이전</button>
+          <span id="page-info">0 / 0</span>
+          <button id="next-page" type="button">다음</button>
+        </nav>
+      </section>
+    </section>
+  </main>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

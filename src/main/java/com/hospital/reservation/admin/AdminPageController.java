@@ -8,7 +8,7 @@ public class AdminPageController {
 
     @GetMapping({"/admin", "/admin/"})
     public String adminPage() {
-        return "forward:/admin/index.html";
+        return "admin/inquiries";
     }
 
     @GetMapping("/admin/login")
@@ -18,6 +18,11 @@ public class AdminPageController {
 
     @GetMapping("/admin/reservations")
     public String reservationPage() {
-        return "forward:/admin/reservations.html";
+        return "admin/reservations";
+    }
+
+    @GetMapping("/admin/employees")
+    public String employeePage() {
+        return "admin/employees";
     }
 }

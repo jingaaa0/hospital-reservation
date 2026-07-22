@@ -64,7 +64,7 @@ public class ReservationService {
     }
 
     private void validateDoctor(ReservationRequest request, Doctor doctor) {
-        if (!doctor.isActive()) {
+        if (!doctor.isAvailableForReservation()) {
             throw new ReservationException(
                     "DOCTOR_UNAVAILABLE",
                     "현재 예약할 수 없는 의료진입니다.",

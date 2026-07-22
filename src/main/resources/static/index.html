@@ -40,6 +40,8 @@
     </aside>
   </main>
 
+
+<!-- ---------------- 문의하기 팝업 시작 ----------------  -->
   <dialog id="contact-choice" class="dialog dialog-small" aria-labelledby="contact-choice-title">
     <button class="close-button" type="button" data-close aria-label="닫기">×</button>
     <p class="dialog-kicker">문의하기</p>
@@ -53,7 +55,7 @@
       <strong>문의 내용을 남겨주세요</strong>
     </button>
   </dialog>
-
+  <!-- ---------------- 문의하기 입력 팝업 시작 ----------------  -->
   <dialog id="inquiry-dialog" class="dialog" aria-labelledby="inquiry-title">
     <button class="close-button" type="button" data-close aria-label="닫기">×</button>
     <p class="dialog-kicker">1:1 문의</p>
@@ -71,7 +73,10 @@
       <button class="submit-button" type="submit">문의 전송하기</button>
     </form>
   </dialog>
+  <!-- ---------------- 문의하기 입력 팝업 끝 ----------------  -->
+<!-- ---------------- 문의하기 팝업 끝 ----------------  -->
 
+<!-- ---------------- 예약하기 팝업 시작 ----------------  -->
   <dialog id="reservation-dialog" class="dialog reservation-dialog" aria-labelledby="reservation-title">
     <button class="close-button" type="button" data-close aria-label="닫기">×</button>
     <div class="reservation-scroll-content">
@@ -83,12 +88,12 @@
       <div class="form-two-columns">
         <label>진료과
           <select id="reservation-department" name="department" required>
-            <option value="">진료과를 불러오는 중입니다</option>
+            <option value="">진료과를 선택해 주세요.</option>
           </select>
         </label>
         <label>의료진
           <select id="reservation-doctor" name="doctorId" required disabled>
-            <option value="">진료과를 먼저 선택해 주세요</option>
+            <option value="">진료과를 먼저 선택해 주세요.</option>
           </select>
         </label>
       </div>
@@ -118,6 +123,7 @@
     </div>
   </dialog>
 
+<!-- ---------------- 예약하기 팝업 끝 ----------------  -->
   <script src="/app.js"></script>
 </body>
 </html>

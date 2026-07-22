@@ -31,23 +31,23 @@ public class DoctorBootstrapConfig implements ApplicationRunner {
         }
 
         doctorRepository.saveAll(List.of(
-                doctor(Department.ENT, "김도윤 원장", 1978, 3, 12, WEEKDAYS, 1),
-                doctor(Department.ENT, "이서현 원장", 1983, 7, 25, MONDAY_TO_SATURDAY, 2),
-                doctor(Department.ENT, "박준호 원장", 1980, 11, 8, WEEKDAYS, 3),
-                doctor(Department.INTERNAL_MEDICINE, "최은지 원장", 1976, 5, 19, MONDAY_TO_SATURDAY, 1),
-                doctor(Department.INTERNAL_MEDICINE, "정민재 원장", 1981, 9, 2, WEEKDAYS, 2),
-                doctor(Department.INTERNAL_MEDICINE, "한수빈 원장", 1985, 1, 14, MONDAY_TO_SATURDAY, 3),
-                doctor(Department.INTERNAL_MEDICINE, "윤지호 원장", 1979, 12, 6, WEEKDAYS, 4),
-                doctor(Department.ORTHOPEDICS, "강현우 원장", 1975, 4, 21, MONDAY_TO_SATURDAY, 1),
-                doctor(Department.ORTHOPEDICS, "송예린 원장", 1984, 8, 17, WEEKDAYS, 2),
-                doctor(Department.ORTHOPEDICS, "조성민 원장", 1982, 2, 10, MONDAY_TO_SATURDAY, 3),
-                doctor(Department.GENERAL_SURGERY, "오세진 원장", 1977, 6, 28, WEEKDAYS, 1),
-                doctor(Department.GENERAL_SURGERY, "배지훈 원장", 1986, 10, 3, MONDAY_TO_SATURDAY, 2),
-                doctor(Department.NEUROSURGERY, "임태윤 원장", 1974, 1, 30, WEEKDAYS, 1),
-                doctor(Department.NEUROSURGERY, "문하린 원장", 1982, 5, 11, MONDAY_TO_SATURDAY, 2),
-                doctor(Department.REHABILITATION_MEDICINE, "서재원 원장", 1979, 7, 7, WEEKDAYS, 1),
-                doctor(Department.REHABILITATION_MEDICINE, "남유진 원장", 1987, 3, 23, MONDAY_TO_SATURDAY, 2),
-                doctor(Department.REHABILITATION_MEDICINE, "권민석 원장", 1983, 11, 16, WEEKDAYS, 3)
+                doctor(Department.ENT, "김도윤", 1978, 3, 12, WEEKDAYS, 1),
+                doctor(Department.ENT, "이서현", 1983, 7, 25, MONDAY_TO_SATURDAY, 2),
+                doctor(Department.ENT, "박준호", 1980, 11, 8, WEEKDAYS, 3),
+                doctor(Department.INTERNAL_MEDICINE, "최은지", 1976, 5, 19, MONDAY_TO_SATURDAY, 1),
+                doctor(Department.INTERNAL_MEDICINE, "정민재", 1981, 9, 2, WEEKDAYS, 2),
+                doctor(Department.INTERNAL_MEDICINE, "한수빈", 1985, 1, 14, MONDAY_TO_SATURDAY, 3),
+                doctor(Department.INTERNAL_MEDICINE, "윤지호", 1979, 12, 6, WEEKDAYS, 4),
+                doctor(Department.ORTHOPEDICS, "강현우", 1975, 4, 21, MONDAY_TO_SATURDAY, 1),
+                doctor(Department.ORTHOPEDICS, "송예린", 1984, 8, 17, WEEKDAYS, 2),
+                doctor(Department.ORTHOPEDICS, "조성민", 1982, 2, 10, MONDAY_TO_SATURDAY, 3),
+                doctor(Department.GENERAL_SURGERY, "오세진", 1977, 6, 28, WEEKDAYS, 1),
+                doctor(Department.GENERAL_SURGERY, "배지훈", 1986, 10, 3, MONDAY_TO_SATURDAY, 2),
+                doctor(Department.NEUROSURGERY, "임태윤", 1974, 1, 30, WEEKDAYS, 1),
+                doctor(Department.NEUROSURGERY, "문하린", 1982, 5, 11, MONDAY_TO_SATURDAY, 2),
+                doctor(Department.REHABILITATION_MEDICINE, "서재원", 1979, 7, 7, WEEKDAYS, 1),
+                doctor(Department.REHABILITATION_MEDICINE, "남유진", 1987, 3, 23, MONDAY_TO_SATURDAY, 2),
+                doctor(Department.REHABILITATION_MEDICINE, "권민석", 1983, 11, 16, WEEKDAYS, 3)
         ));
     }
 

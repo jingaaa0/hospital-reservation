@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="늘봄의원 관리자 직원 관리">
+  <title>직원 관리 | 늘봄의원 관리자</title>
+  <link rel="stylesheet" href="/admin/admin.css">
+  <link rel="stylesheet" href="/admin/employees.css">
+</head>
+<body>
+  <main class="admin-layout">
+    <aside th:replace="~{admin/fragments/sidebar :: sidebar('employees')}"></aside>
+
+    <section class="content employee-content">
+      <header th:replace="~{admin/fragments/page-header :: pageHeader(
+        '직원 관리',
+        '직원 목록',
+        '등록된 직원 정보를 관리하세요.'
+      )}"></header>
+
+      <nav class="employee-filters" aria-label="직원 유형 필터">
+        <button class="employee-filter active" type="button" data-employee-filter="ALL" aria-pressed="true">전체 보기</button>
+        <button class="employee-filter" type="button" data-employee-filter="DOCTOR" aria-pressed="false">의사</button>
+        <button class="employee-filter" type="button" data-employee-filter="STAFF" aria-pressed="false">일반 직원</button>
+      </nav>
+
+      <section class="employee-panel" aria-labelledby="employee-list-title">
+        <div class="panel-heading">
+          <h2 id="employee-list-title">전체 직원</h2>
+          <p id="list-message" role="status"></p>
+        </div>
+        <div class="table-scroll">
+          <table class="employee-table">
+            <thead>
+              <tr>
+                <th>구분</th>
+                <th>성명</th>
+                <th>부서</th>
+                <th>직함</th>
+                <th>생년월일</th>
+                <th>재직 상태</th>
+              </tr>
+            </thead>
+            <tbody id="employee-list"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script src="/admin/employees.js"></script>
+</body>
+</html>

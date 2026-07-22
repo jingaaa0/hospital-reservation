@@ -17,7 +17,7 @@ public class DoctorService {
     }
 
     public List<DepartmentResponse> findDepartments() {
-        return doctorRepository.findActiveDepartments().stream()
+        return doctorRepository.findDepartmentsByEmploymentStatus(DoctorEmploymentStatus.Y).stream()
                 .sorted(Comparator.comparingInt(Department::ordinal))
                 .map(DepartmentResponse::from)
                 .toList();
@@ -25,8 +25,13 @@ public class DoctorService {
 
     public List<DoctorResponse> findDoctors(Department department) {
         List<Doctor> doctors = department == null
-                ? doctorRepository.findAllByActiveTrueOrderByDepartmentAscDisplayOrderAscNameAsc()
-                : doctorRepository.findAllByDepartmentAndActiveTrueOrderByDisplayOrderAscNameAsc(department);
+                ? doctorRepository.findAllByEmploymentStatusOrderByDepartmentAscDisplayOrderAscNameAsc(
+                        DoctorEmploymentStatus.Y
+                )
+                : doctorRepository.findAllByDepartmentAndEmploymentStatusOrderByDisplayOrderAscNameAsc(
+                        department,
+                        DoctorEmploymentStatus.Y
+                );
         return doctors.stream()
                 .map(DoctorResponse::from)
                 .toList();

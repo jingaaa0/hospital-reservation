@@ -31,7 +31,7 @@ class DoctorControllerTest {
         mockMvc.perform(get("/api/doctors").param("department", "GENERAL_SURGERY"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].name").value("오세진 원장"))
+                .andExpect(jsonPath("$[0].name").value("오세진"))
                 .andExpect(jsonPath("$[0].doctorId").isNumber());
     }
 }

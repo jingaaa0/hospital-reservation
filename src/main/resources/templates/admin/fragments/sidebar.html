@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+  <aside class="sidebar" th:fragment="sidebar(activeMenu)">
+    <a class="brand" href="/">늘봄의원 <span>관리자</span></a>
+    <nav aria-label="관리자 메뉴">
+      <a href="/admin/"
+         th:class="${activeMenu == 'inquiries'} ? 'nav-item active' : 'nav-item'">1:1 문의 관리</a>
+      <a href="/admin/reservations"
+         th:class="${activeMenu == 'reservations'} ? 'nav-item active' : 'nav-item'">예약 관리</a>
+      <a href="/admin/employees"
+         th:class="${activeMenu == 'employees'} ? 'nav-item active' : 'nav-item'">직원 관리</a>
+    </nav>
+    <a class="back-link" href="/">← 랜딩페이지 보기</a>
+  </aside>
+</body>
+</html>

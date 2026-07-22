@@ -1,0 +1,22 @@
+.employee-content { max-width: 1320px; }
+.employee-filters { display: flex; gap: 8px; margin: 36px 0 18px; }
+.employee-filter { padding: 10px 18px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: #fff; font-weight: 800; }
+.employee-filter:hover { border-color: #a9cfe0; color: var(--navy); }
+.employee-filter.active { border-color: var(--navy); color: #fff; background: var(--navy); }
+.employee-panel { overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+.table-scroll { overflow-x: auto; }
+.employee-table { width: 100%; min-width: 760px; border-collapse: collapse; }
+.employee-table th { padding: 14px 18px; color: var(--muted); background: #f7fafb; font-size: .8rem; text-align: left; }
+.employee-table td { padding: 19px 18px; border-top: 1px solid var(--line); vertical-align: middle; }
+.employee-name { font-weight: 900; }
+.employee-type, .employment-status { display: inline-flex; padding: 6px 10px; border-radius: 999px; font-size: .78rem; font-weight: 900; }
+.employee-type.doctor { color: #1d6b9a; background: #e0f3fc; }
+.employee-type.staff { color: #76551a; background: #fff2cb; }
+.employment-status.status-y { color: #1f7352; background: #d9f3e6; }
+.employment-status.status-l { color: #8b5c0d; background: #fff2cb; }
+.employment-status.status-n { color: #6d8291; background: #e8eef1; }
+.employee-empty td { padding: 70px 20px; color: var(--muted); text-align: center; }
+@media (max-width: 700px) {
+  .employee-filters { overflow-x: auto; padding-bottom: 4px; }
+  .employee-filter { flex: 0 0 auto; }
+}

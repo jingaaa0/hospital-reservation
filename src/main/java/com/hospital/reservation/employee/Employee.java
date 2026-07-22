@@ -1,40 +1,35 @@
-package com.hospital.reservation.doctor;
+package com.hospital.reservation.employee;
 
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(
-        name = "doctors",
+        name = "employees",
         uniqueConstraints = @UniqueConstraint(
-                name = "uk_doctors_department_name",
+                name = "uk_employees_department_name",
                 columnNames = {"department", "name"}
         ),
-        indexes = @Index(name = "idx_doctors_department_active", columnList = "department, active")
+        indexes = @Index(
+                name = "idx_employees_department_active",
+                columnList = "department, active"
+        )
 )
-public class Doctor {
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,30 +37,20 @@ public class Doctor {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 40)
-    private Department department;
+    private EmployeeDepartment department;
 
     @Column(nullable = false, length = 50)
     private String name;
 
+    @Column(nullable = false, length = 50)
+    private String position;
+
     @Column(nullable = false)
     private LocalDate birthDate;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(
-            name = "doctor_available_days",
-            joinColumns = @JoinColumn(name = "doctor_id"),
-            uniqueConstraints = @UniqueConstraint(
-                    name = "uk_doctor_available_days",
-                    columnNames = {"doctor_id", "day_of_week"}
-            )
-    )
-    @Enumerated(EnumType.STRING)
-    @Column(name = "day_of_week", nullable = false, length = 10)
-    private Set<DayOfWeek> availableDays = EnumSet.noneOf(DayOfWeek.class);
-
     @Enumerated(EnumType.STRING)
     @Column(name = "active", nullable = false, length = 1)
-    private DoctorEmploymentStatus employmentStatus;
+    private EmployeeEmploymentStatus employmentStatus;
 
     @Column(nullable = false)
     private int displayOrder;
@@ -76,35 +61,32 @@ public class Doctor {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    protected Doctor() {
+    protected Employee() {
     }
 
-    private Doctor(
-            Department department,
+    private Employee(
+            EmployeeDepartment department,
             String name,
+            String position,
             LocalDate birthDate,
-            Set<DayOfWeek> availableDays,
             int displayOrder
     ) {
         this.department = Objects.requireNonNull(department);
-        this.name = Objects.requireNonNull(name);
+        this.name = Objects.requireNonNull(name).trim();
+        this.position = Objects.requireNonNull(position).trim();
         this.birthDate = Objects.requireNonNull(birthDate);
-        if (availableDays == null || availableDays.isEmpty()) {
-            throw new IllegalArgumentException("진료 가능 요일은 한 개 이상이어야 합니다.");
-        }
-        this.availableDays = EnumSet.copyOf(availableDays);
-        this.employmentStatus = DoctorEmploymentStatus.Y;
+        this.employmentStatus = EmployeeEmploymentStatus.Y;
         this.displayOrder = displayOrder;
     }
 
-    public static Doctor create(
-            Department department,
+    public static Employee create(
+            EmployeeDepartment department,
             String name,
+            String position,
             LocalDate birthDate,
-            Set<DayOfWeek> availableDays,
             int displayOrder
     ) {
-        return new Doctor(department, name, birthDate, availableDays, displayOrder);
+        return new Employee(department, name, position, birthDate, displayOrder);
     }
 
     @PrePersist
@@ -123,7 +105,7 @@ public class Doctor {
         return id;
     }
 
-    public Department getDepartment() {
+    public EmployeeDepartment getDepartment() {
         return department;
     }
 
@@ -131,23 +113,19 @@ public class Doctor {
         return name;
     }
 
+    public String getPosition() {
+        return position;
+    }
+
     public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public Set<DayOfWeek> getAvailableDays() {
-        return Collections.unmodifiableSet(availableDays);
-    }
-
-    public DoctorEmploymentStatus getEmploymentStatus() {
+    public EmployeeEmploymentStatus getEmploymentStatus() {
         return employmentStatus;
     }
 
-    public boolean isAvailableForReservation() {
-        return employmentStatus == DoctorEmploymentStatus.Y;
-    }
-
-    public void changeEmploymentStatus(DoctorEmploymentStatus employmentStatus) {
+    public void changeEmploymentStatus(EmployeeEmploymentStatus employmentStatus) {
         this.employmentStatus = Objects.requireNonNull(employmentStatus);
     }
 

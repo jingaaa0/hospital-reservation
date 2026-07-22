@@ -19,6 +19,7 @@ function resetDoctorOptions(message = '진료과를 먼저 선택해 주세요')
   reservationDoctor.disabled = true;
 }
 
+// 진료과 목록 가져오기
 async function loadDepartments() {
   reservationDepartment.disabled = true;
   try {
@@ -38,6 +39,7 @@ async function loadDepartments() {
   }
 }
 
+// 진료과 의료진 목록 가져오기
 async function updateDoctorOptions() {
   const department = reservationDepartment.value;
   if (!department) {

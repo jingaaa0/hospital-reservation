@@ -1,8 +1,10 @@
 .employee-content { max-width: 1320px; }
-.employee-filters { display: flex; gap: 8px; margin: 36px 0 18px; }
+.employee-filters { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 36px 0 18px; }
+.filter-buttons { display: flex; gap: 8px; }
 .employee-filter { padding: 10px 18px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: #fff; font-weight: 800; }
 .employee-filter:hover { border-color: #a9cfe0; color: var(--navy); }
 .employee-filter.active { border-color: var(--navy); color: #fff; background: var(--navy); }
+.add-employee-button { padding: 11px 18px; border: 1px solid var(--navy); border-radius: 10px; color: #fff; background: var(--navy); font-weight: 800; }
 .employee-panel { overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
 .table-scroll { overflow-x: auto; }
 .employee-table { width: 100%; min-width: 760px; border-collapse: collapse; }
@@ -16,7 +18,28 @@
 .employment-status.status-l { color: #8b5c0d; background: #fff2cb; }
 .employment-status.status-n { color: #6d8291; background: #e8eef1; }
 .employee-empty td { padding: 70px 20px; color: var(--muted); text-align: center; }
+.row-actions { display: flex; gap: 6px; white-space: nowrap; }
+.row-actions button { padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; color: var(--navy); background: #fff; font-weight: 800; }
+.row-actions .delete-button { color: #ad3535; }
+.employee-dialog { width: min(620px, calc(100% - 32px)); padding: 24px; border: 0; border-radius: 16px; color: var(--ink); box-shadow: 0 24px 70px rgba(17, 48, 65, .28); }
+.employee-dialog::backdrop { background: rgba(12, 35, 48, .58); }
+.dialog-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.dialog-heading h2 { margin: 0; }
+.dialog-close { padding: 4px 9px; border: 0; color: var(--muted); background: transparent; font-size: 1.7rem; }
+.employee-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.employee-form-grid label, .employee-form-grid legend { font-size: .9rem; font-weight: 800; }
+.employee-form-grid input, .employee-form-grid select { width: 100%; margin-top: 7px; padding: 11px; border: 1px solid var(--line); border-radius: 9px; color: var(--ink); background: #fff; font: inherit; }
+.employee-form-grid fieldset { grid-column: 1 / -1; margin: 0; padding: 0; border: 0; }
+.available-days { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.available-days label { display: flex; align-items: center; gap: 5px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; }
+.available-days input { width: auto; margin: 0; }
+.dialog-message { min-height: 1.3em; margin: 12px 0 0; color: #bd3c3c; font-size: .88rem; font-weight: 700; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+.dialog-actions button { padding: 10px 16px; border: 1px solid var(--line); border-radius: 9px; color: var(--navy); background: #fff; font-weight: 800; }
+.dialog-actions .primary-action { border-color: var(--navy); color: #fff; background: var(--navy); }
 @media (max-width: 700px) {
-  .employee-filters { overflow-x: auto; padding-bottom: 4px; }
+  .employee-filters { align-items: stretch; flex-direction: column; }
+  .filter-buttons { overflow-x: auto; padding-bottom: 4px; }
   .employee-filter { flex: 0 0 auto; }
+  .employee-form-grid { grid-template-columns: 1fr; }
 }

@@ -1,6 +1,7 @@
 package com.hospital.reservation.common;
 
 import com.hospital.reservation.reservation.ReservationException;
+import com.hospital.reservation.employee.EmployeeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -10,6 +11,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(EmployeeException.class)
+    public ResponseEntity<ApiErrorResponse> handleEmployeeException(EmployeeException exception) {
+        return ResponseEntity.status(exception.getStatus())
+                .body(new ApiErrorResponse(exception.getCode(), exception.getMessage()));
+    }
 
     @ExceptionHandler(ReservationException.class)
     public ResponseEntity<ApiErrorResponse> handleReservationException(ReservationException exception) {

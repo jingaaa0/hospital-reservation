@@ -151,6 +151,25 @@ public class Doctor {
         this.employmentStatus = Objects.requireNonNull(employmentStatus);
     }
 
+    public void update(
+            Department department,
+            String name,
+            LocalDate birthDate,
+            Set<DayOfWeek> availableDays,
+            DoctorEmploymentStatus employmentStatus,
+            int displayOrder
+    ) {
+        if (availableDays == null || availableDays.isEmpty()) {
+            throw new IllegalArgumentException("진료 가능 요일은 한 개 이상이어야 합니다.");
+        }
+        this.department = Objects.requireNonNull(department);
+        this.name = Objects.requireNonNull(name).trim();
+        this.birthDate = Objects.requireNonNull(birthDate);
+        this.availableDays = EnumSet.copyOf(availableDays);
+        this.employmentStatus = Objects.requireNonNull(employmentStatus);
+        this.displayOrder = displayOrder;
+    }
+
     public int getDisplayOrder() {
         return displayOrder;
     }

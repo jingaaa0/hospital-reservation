@@ -18,4 +18,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>,
             LocalDate appointmentDate,
             LocalTime appointmentTime
     );
+
+    boolean existsByDoctorId(Long doctorId);
 }

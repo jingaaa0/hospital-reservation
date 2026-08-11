@@ -129,6 +129,22 @@ public class Employee {
         this.employmentStatus = Objects.requireNonNull(employmentStatus);
     }
 
+    public void update(
+            EmployeeDepartment department,
+            String name,
+            String position,
+            LocalDate birthDate,
+            EmployeeEmploymentStatus employmentStatus,
+            int displayOrder
+    ) {
+        this.department = Objects.requireNonNull(department);
+        this.name = Objects.requireNonNull(name).trim();
+        this.position = Objects.requireNonNull(position).trim();
+        this.birthDate = Objects.requireNonNull(birthDate);
+        this.employmentStatus = Objects.requireNonNull(employmentStatus);
+        this.displayOrder = displayOrder;
+    }
+
     public int getDisplayOrder() {
         return displayOrder;
     }

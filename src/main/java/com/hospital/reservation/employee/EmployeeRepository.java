@@ -9,4 +9,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findAllByOrderByDepartmentAscDisplayOrderAscNameAsc();
 
     boolean existsByDepartmentAndName(EmployeeDepartment department, String name);
+
+    boolean existsByDepartmentAndNameAndIdNot(EmployeeDepartment department, String name, Long id);
 }

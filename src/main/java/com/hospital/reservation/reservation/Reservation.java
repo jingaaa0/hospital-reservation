@@ -1,6 +1,8 @@
 package com.hospital.reservation.reservation;
 
 import com.hospital.reservation.doctor.Doctor;
+import org.springframework.http.HttpStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,12 +19,15 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 import java.util.UUID;
 
+@Slf4j
 @Entity
 @Table(
         name = "reservations",
@@ -189,8 +194,27 @@ public class Reservation {
     }
 
     public void changeStatus(ReservationStatus status) {
-        this.status = Objects.requireNonNull(status);
+        Objects.requireNonNull(status, "변경할 상태는 필수입니다.");
+        if(this.status == ReservationStatus.REQUESTED) {
+            // 신청 상태에서는 확정 또는 취소만 허용
+            if(status != ReservationStatus.CONFIRMED && status != ReservationStatus.CANCELLED) {
+                throw new ReservationException("INVALID_RESERVATION_STATUS", "신청 상태에서는 확정 또는 취소만 가능", HttpStatus.CONFLICT);
+            }
+        } else if (this.status == ReservationStatus.CONFIRMED) {
+            // 확정 상태에서는 완료, 취소 또는 미방문만 허용
+            if(status != ReservationStatus.COMPLETED && status != ReservationStatus.CANCELLED && status != ReservationStatus.NO_SHOW) {
+                throw new ReservationException("INVALID_RESERVATION_STATUS", "확정 상태에서는 완료, 취소 또는 미방문만 가능", HttpStatus.CONFLICT);
+            }
+        } else {
+            // 완료, 취소, 미방문 상태에서는 변경 불가
+            throw new ReservationException("INVALID_RESERVATION_STATUS", "종료된 예약은 상태를 변경할 수 없습니다.", HttpStatus.CONFLICT);
+        }
+
+        log.info("예약 상태 변경: {} -> {}", this.status, status);
+        this.status = status;
+        
     }
+    
 
     public void changeAdminMemo(String adminMemo) {
         this.adminMemo = adminMemo == null || adminMemo.isBlank() ? null : adminMemo.trim();

@@ -4,6 +4,7 @@ import com.hospital.reservation.doctor.Doctor;
 import com.hospital.reservation.doctor.DoctorRepository;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -40,7 +41,7 @@ class AdminReservationControllerTest {
     private EntityManager entityManager;
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(roles = "ADMIN") // 관리자 로그인 상태를 가정
     void filtersSortsAndUpdatesReservation() throws Exception {
         Doctor doctor = doctorRepository.findById(1L).orElseThrow();
         LocalDate appointmentDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY));
@@ -84,4 +85,48 @@ class AdminReservationControllerTest {
         assertThat(reservationRepository.findById(reservation.getId()).orElseThrow().getAdminMemo())
                 .isEqualTo("전화 상담 후 예약 확정");
     }
+
+    //
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void invalidStatusChangeReturnsConflict() throws Exception {
+        // 테스트 DB에 신청 상태 예약 저장
+        Doctor doctor = doctorRepository.findById(1L).orElseThrow();
+        LocalDate appointmentDate = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+        
+        Reservation reservation = reservationRepository.saveAndFlush(
+                Reservation.create(
+                        "상태변경테스트",
+                        "01012345678",
+                        doctor,
+                        appointmentDate,
+                        LocalTime.of(11, 0),
+                        null,
+                        true
+                )
+        );
+
+        // 신청 -> 완료 API 요청 및 오류 응답 검증
+        mockMvc.perform(patch(
+                        "/api/admin/reservations/{reservationId}/status",
+                        reservation.getId()
+                )
+                        .with(csrf()) // 보안 검사에 필요한 토큰 붙임 403 방지
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"status\":\"COMPLETED\"}"))
+                .andExpect(status().isConflict()) // HTTP 상태, JSON 응답 검증
+                .andExpect(jsonPath("$.code").value("INVALID_RESERVATION_STATUS"))
+                .andExpect(jsonPath("$.message").value("신청 상태에서는 확정 또는 취소만 가능"));
+
+        // DB에서 다시 조회해 기존 상태 유지 확인
+        Reservation saved = reservationRepository.findById(reservation.getId()).orElseThrow();
+
+        assertThat(saved.getStatus()).isEqualTo(ReservationStatus.REQUESTED);
+    }
+
+     // 테스트 DB 데이터 지우기
+     @BeforeEach
+     void setUp() {
+        reservationRepository.deleteAll();
+     }
 }

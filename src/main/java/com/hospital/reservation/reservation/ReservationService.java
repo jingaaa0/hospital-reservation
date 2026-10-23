@@ -36,8 +36,14 @@ public class ReservationService {
         validateDoctor(request, doctor);
         validateSchedule(request.date(), request.appointmentTime(), doctor);
 
-        if (reservationRepository.existsByDoctorIdAndAppointmentDateAndAppointmentTime(
-                doctor.getId(), request.date(), request.appointmentTime())) {
+        // 중복 조회
+        if (reservationRepository
+                .existsByDoctorIdAndAppointmentDateAndAppointmentTimeAndStatusNot(
+                        doctor.getId(),
+                        request.date(),
+                        request.appointmentTime(),
+                        ReservationStatus.CANCELLED
+                )) {
             throw slotAlreadyTaken();
         }
 

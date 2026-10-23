@@ -33,10 +33,6 @@ import java.util.UUID;
         name = "reservations",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uk_reservations_number", columnNames = "reservation_number"),
-                @UniqueConstraint(
-                        name = "uk_reservations_doctor_schedule",
-                        columnNames = {"doctor_id", "appointment_date", "appointment_time"}
-                )
         },
         indexes = {
                 @Index(name = "idx_reservations_date_status", columnList = "appointment_date, status"),

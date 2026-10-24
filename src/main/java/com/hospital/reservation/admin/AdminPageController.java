@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AdminPageController {
 
-    @GetMapping({"/admin", "/admin/"})
+    @GetMapping("/admin/inquiries")
     public String adminPage() {
         return "admin/inquiries";
     }
@@ -24,5 +24,10 @@ public class AdminPageController {
     @GetMapping("/admin/employees")
     public String employeePage() {
         return "admin/employees";
+    }
+
+    @GetMapping({"/admin/dashboard", "/admin", "/admin/"})
+    public String dashboardPage() {
+        return "admin/dashboard";
     }
 }

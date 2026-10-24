@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>대시보드 | 늘봄의원 관리자</title>
+    <link rel="stylesheet" href="/admin/admin.css" />
+    <link rel="stylesheet" href="/admin/reservations.css" />
+  </head>
+  <body>
+    <main class="admin-layout">
+      <aside
+        th:replace="~{admin/fragments/sidebar :: sidebar('dashboard')}"
+      ></aside>
+
+      <section class="content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">대시보드</p>
+            <h1>오늘의 운영 현황</h1>
+            <p id="dashboard-date">기준 날짜를 불러오는 중입니다.</p>
+          </div>
+          <div class="header-actions">
+            <button id="refresh-button" type="button">새로고침</button>
+            <button id="logout-button" class="logout-button" type="button">
+              로그아웃
+            </button>
+          </div>
+        </header>
+
+        <section class="summary" aria-label="예약 및 문의 현황">
+          <article>
+            <span>오늘 전체 예약 · 취소 포함</span>
+            <strong id="total-reservations">—</strong>
+          </article>
+          <article>
+            <span>오늘 신청 상태 예약</span>
+            <strong id="requested-reservations">—</strong>
+          </article>
+          <article>
+            <span>오늘 확정 상태 예약</span>
+            <strong id="confirmed-reservations">—</strong>
+          </article>
+          <article>
+            <span>미처리 문의 · 전체 기간</span>
+            <strong id="pending-inquiries">—</strong>
+          </article>
+        </section>
+
+        <section class="reservation-panel" aria-labelledby="reservation-title">
+          <div class="panel-heading">
+            <h2 id="reservation-title">오늘 진료 예약</h2>
+            <p id="dashboard-message" role="status"></p>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">예약 시간</th>
+                  <th scope="col">환자명</th>
+                  <th scope="col">의사</th>
+                  <th scope="col">예약 상태</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-reservations">
+                <tr class="empty-row">
+                  <td colspan="4">예약 정보를 불러오는 중입니다.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="/admin/dashboard.js"></script>
+  </body>
+</html>

@@ -51,7 +51,7 @@ class AdminSecurityTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void rendersInquiryPageWithSharedSidebar() throws Exception {
-        mockMvc.perform(get("/admin/"))
+        mockMvc.perform(get("/admin/inquiries"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("1:1 문의 목록")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("nav-item active")));
@@ -74,5 +74,18 @@ class AdminSecurityTest {
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("직원 목록")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("data-employee-filter=\"DOCTOR\"")))
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("data-employee-filter=\"STAFF\"")));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void rendersDashboardAsAdminHome() throws Exception {
+        mockMvc.perform(get("/admin/"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(
+                        org.hamcrest.Matchers.containsString("오늘의 운영 현황")
+                ))
+                .andExpect(content().string(
+                        org.hamcrest.Matchers.containsString("id=\"total-reservations\"")
+                ));
     }
 }

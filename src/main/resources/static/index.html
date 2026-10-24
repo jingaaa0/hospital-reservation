@@ -81,10 +81,12 @@
     <button class="close-button" type="button" data-close aria-label="닫기">×</button>
     <div class="reservation-scroll-content">
       <p class="dialog-kicker">진료 예약</p>
-      <h2 id="reservation-title">편한 시간에<br>예약하세요.</h2>
+      <h2 id="reservation-title">편한 시간에 예약하세요.</h2>
       <form id="reservation-form" class="form-grid">
+      <div class="form-two-columns">
       <label>이름<input name="name" autocomplete="name" required></label>
       <label>전화번호<input name="phoneNumber" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" pattern="010-[0-9]{4}-[0-9]{4}" maxlength="13" title="010-0000-0000 형식으로 입력해 주세요." required></label>
+      </div>
       <div class="form-two-columns">
         <label>진료과
           <select id="reservation-department" name="department" required>
@@ -115,7 +117,7 @@
         <label>시간대<select id="reservation-time-slot" name="appointmentTime" required disabled><option value="">날짜를 먼저 선택해 주세요</option></select></label>
       </div>
       <p id="schedule-message" class="field-hint" aria-live="polite">일요일은 휴진입니다.</p>
-      <label>증상<textarea name="symptom" rows="3" maxlength="2000" placeholder="현재 불편한 증상을 적어주세요."></textarea></label>
+      <label>증상 (선택)<textarea name="symptom" rows="2" maxlength="2000" placeholder="현재 불편한 증상을 적어주세요."></textarea></label>
       <label class="checkbox-label"><input name="privacyAgreed" type="checkbox" required> 개인정보 수집 및 이용에 동의합니다.</label>
       <p class="form-message" aria-live="polite"></p>
         <button class="submit-button" type="submit">예약 신청하기</button>

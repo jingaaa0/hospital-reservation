@@ -226,15 +226,17 @@ dialog::backdrop {
 }
 
 .reservation-dialog {
+  width: min(94vw, 640px);
+  max-height: calc(100dvh - 32px);
+  padding: 28px;
   overflow: hidden;
 }
 
 .reservation-scroll-content {
-  max-height: calc(min(88vh, 760px) - 76px);
-  padding-right: 14px;
+  max-height: calc(100dvh - 88px);
+  padding: 4px;
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-gutter: stable;
 }
 
 .reservation-scroll-content::-webkit-scrollbar {
@@ -529,4 +531,71 @@ dialog::backdrop {
 #result-dialog .submit-button:focus-visible {
   outline: 3px solid var(--navy);
   outline-offset: 3px;
+}
+
+/* Keep the reservation form compact without changing other dialogs. */
+.reservation-dialog .dialog-kicker {
+  margin-bottom: 6px;
+}
+
+.reservation-dialog h2 {
+  margin-bottom: 18px;
+  padding-right: 32px;
+  font-size: clamp(1.45rem, 4vw, 1.85rem);
+}
+
+.reservation-dialog .form-grid {
+  gap: 12px;
+}
+
+.reservation-dialog .form-two-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.reservation-dialog .form-grid label,
+.reservation-dialog .date-field {
+  min-width: 0;
+  gap: 5px;
+}
+
+.reservation-dialog .form-grid input:not([type="checkbox"]),
+.reservation-dialog .form-grid select,
+.reservation-dialog .calendar-toggle {
+  min-height: 44px;
+  padding: 10px;
+}
+
+.reservation-dialog textarea {
+  padding: 10px;
+  resize: vertical;
+}
+
+.reservation-dialog .form-message:empty {
+  display: none;
+}
+
+.reservation-dialog .submit-button {
+  min-height: 48px;
+  padding: 12px;
+}
+
+/* An expanded calendar participates in layout so scrolling cannot clip it. */
+.reservation-dialog .calendar-picker {
+  position: static;
+  width: 100%;
+}
+
+@media (max-width: 520px) {
+  .reservation-dialog {
+    padding: 24px 16px;
+  }
+
+  .reservation-scroll-content {
+    max-height: calc(100dvh - 80px);
+  }
+
+  .reservation-dialog .form-two-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

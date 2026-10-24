@@ -1,99 +1,172 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<body>
-  <main class="admin-layout">
-    <aside th:replace="~{admin/fragments/sidebar :: sidebar('reservations')}"></aside>
+  <body>
+    <main class="admin-layout">
+      <aside
+        th:replace="~{admin/fragments/sidebar :: sidebar('reservations')}"
+      ></aside>
 
-    <section class="content reservation-content">
-      <header th:replace="~{admin/fragments/page-header :: pageHeader(
+      <section class="content reservation-content">
+        <header
+          th:replace="~{admin/fragments/page-header :: pageHeader(
         '예약 관리',
         '진료 예약 목록',
         '예약을 검색하고 처리 상태를 관리하세요.'
-      )}"></header>
+      )}"
+        ></header>
 
-      <form id="reservation-filter" class="filter-panel">
-        <label>진료과<select id="filter-department" name="department"><option value="">전체 진료과</option></select></label>
-        <label>원장<select id="filter-doctor" name="doctorId"><option value="">전체 원장</option></select></label>
-        <label>예약 날짜<input id="filter-date" name="date" type="date"></label>
-        <label>예약 상태
-          <select id="filter-status" name="status">
-            <option value="">전체 상태</option>
-            <option value="REQUESTED">신청</option>
-            <option value="CONFIRMED">확정</option>
-            <option value="COMPLETED">진료 완료</option>
-            <option value="CANCELLED">취소</option>
-            <option value="NO_SHOW">미방문</option>
-          </select>
-        </label>
-        <label>정렬 기준
-          <select id="sort-by" name="sortBy">
-            <option value="appointment">예약 날짜/시간</option>
-            <option value="department">진료과</option>
-            <option value="doctor">원장</option>
-            <option value="status">예약 상태</option>
-          </select>
-        </label>
-        <label>정렬 방향
-          <select id="sort-direction" name="direction">
-            <option value="ASC">오름차순</option>
-            <option value="DESC">내림차순</option>
-          </select>
-        </label>
-        <div class="filter-actions">
-          <button class="apply-filter" type="submit">조회</button>
-          <button id="reset-filter" type="button">초기화</button>
+        <form id="reservation-filter" class="filter-panel">
+          <label
+            >진료과<select id="filter-department" name="department">
+              <option value="">전체 진료과</option>
+            </select></label
+          >
+          <label
+            >원장<select id="filter-doctor" name="doctorId">
+              <option value="">전체 원장</option>
+            </select></label
+          >
+          <label
+            >예약 날짜<input id="filter-date" name="date" type="date"
+          /></label>
+          <label
+            >예약 상태
+            <select id="filter-status" name="status">
+              <option value="">전체 상태</option>
+              <option value="REQUESTED">신청</option>
+              <option value="CONFIRMED">확정</option>
+              <option value="COMPLETED">진료 완료</option>
+              <option value="CANCELLED">취소</option>
+              <option value="NO_SHOW">미방문</option>
+            </select>
+          </label>
+          <label
+            >정렬 기준
+            <select id="sort-by" name="sortBy">
+              <option value="createdAt" selected>등록 일시</option>
+              <option value="appointment">예약 날짜/시간</option>
+              <option value="department">진료과</option>
+              <option value="doctor">원장</option>
+              <option value="status">예약 상태</option>
+            </select>
+          </label>
+          <label
+            >정렬 방향
+            <select id="sort-direction" name="direction">
+              <option value="ASC">오름차순</option>
+              <option value="DESC" selected>내림차순</option>
+            </select>
+          </label>
+          <div class="filter-actions">
+            <button class="apply-filter" type="submit">조회</button>
+            <button id="reset-filter" type="button">초기화</button>
+          </div>
+        </form>
+
+        <section
+          class="reservation-panel"
+          aria-labelledby="reservation-list-title"
+        >
+          <div class="panel-heading">
+            <h2 id="reservation-list-title">예약 내역</h2>
+            <p id="list-message" role="status"></p>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>환자</th>
+                  <th>예약 날짜/시간</th>
+                  <th>진료 정보</th>
+                  <th>증상</th>
+                  <th>관리자 메모</th>
+                  <th>예약 상태</th>
+                </tr>
+              </thead>
+              <tbody id="reservation-list"></tbody>
+            </table>
+          </div>
+          <nav class="pagination" aria-label="예약 목록 페이지">
+            <button id="previous-page" type="button">이전</button>
+            <span id="page-info">1 / 1</span>
+            <button id="next-page" type="button">다음</button>
+          </nav>
+        </section>
+      </section>
+    </main>
+
+    <dialog
+      id="symptom-dialog"
+      class="reservation-dialog"
+      aria-labelledby="symptom-dialog-title"
+    >
+      <div class="dialog-heading">
+        <h2 id="symptom-dialog-title">증상 내용</h2>
+        <button
+          class="dialog-close"
+          type="button"
+          data-close-dialog="symptom-dialog"
+          aria-label="증상 팝업 닫기"
+        >
+          ×
+        </button>
+      </div>
+      <p id="symptom-dialog-patient" class="dialog-patient"></p>
+      <p id="symptom-dialog-content" class="dialog-content"></p>
+    </dialog>
+
+    <dialog
+      id="memo-dialog"
+      class="reservation-dialog"
+      aria-labelledby="memo-dialog-title"
+    >
+      <form id="memo-form">
+        <div class="dialog-heading">
+          <h2 id="memo-dialog-title">관리자 메모</h2>
+          <button
+            class="dialog-close"
+            type="button"
+            data-close-dialog="memo-dialog"
+            aria-label="메모 팝업 닫기"
+          >
+            ×
+          </button>
+        </div>
+        <p id="memo-dialog-patient" class="dialog-patient"></p>
+        <label for="admin-memo">메모 내용</label>
+        <textarea
+          id="admin-memo"
+          maxlength="2000"
+          rows="8"
+          placeholder="관리자만 확인할 수 있는 메모를 입력하세요."
+        ></textarea>
+        <p id="memo-message" class="dialog-message" role="status"></p>
+        <div class="dialog-actions">
+          <button type="button" data-close-dialog="memo-dialog">취소</button>
+          <button id="save-memo" class="primary-action" type="submit">
+            메모 저장
+          </button>
         </div>
       </form>
+    </dialog>
 
-      <section class="reservation-panel" aria-labelledby="reservation-list-title">
-        <div class="panel-heading">
-          <h2 id="reservation-list-title">예약 내역</h2>
-          <p id="list-message" role="status"></p>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>환자</th><th>예약 날짜/시간</th><th>진료 정보</th><th>증상</th><th>관리자 메모</th><th>예약 상태</th>
-              </tr>
-            </thead>
-            <tbody id="reservation-list"></tbody>
-          </table>
-        </div>
-        <nav class="pagination" aria-label="예약 목록 페이지">
-          <button id="previous-page" type="button">이전</button>
-          <span id="page-info">1 / 1</span>
-          <button id="next-page" type="button">다음</button>
-        </nav>
-      </section>
-    </section>
-  </main>
-
-  <dialog id="symptom-dialog" class="reservation-dialog" aria-labelledby="symptom-dialog-title">
-    <div class="dialog-heading">
-      <h2 id="symptom-dialog-title">증상 내용</h2>
-      <button class="dialog-close" type="button" data-close-dialog="symptom-dialog" aria-label="증상 팝업 닫기">×</button>
-    </div>
-    <p id="symptom-dialog-patient" class="dialog-patient"></p>
-    <p id="symptom-dialog-content" class="dialog-content"></p>
-  </dialog>
-
-  <dialog id="memo-dialog" class="reservation-dialog" aria-labelledby="memo-dialog-title">
-    <form id="memo-form">
+    <dialog
+      id="result-dialog"
+      class="reservation-dialog"
+      aria-labelledby="result-dialog-title"
+      aria-describedby="result-dialog-message"
+    >
       <div class="dialog-heading">
-        <h2 id="memo-dialog-title">관리자 메모</h2>
-        <button class="dialog-close" type="button" data-close-dialog="memo-dialog" aria-label="메모 팝업 닫기">×</button>
+        <h2 id="result-dialog-title">처리 결과</h2>
       </div>
-      <p id="memo-dialog-patient" class="dialog-patient"></p>
-      <label for="admin-memo">메모 내용</label>
-      <textarea id="admin-memo" maxlength="2000" rows="8" placeholder="관리자만 확인할 수 있는 메모를 입력하세요."></textarea>
-      <p id="memo-message" class="dialog-message" role="status"></p>
-      <div class="dialog-actions">
-        <button type="button" data-close-dialog="memo-dialog">취소</button>
-        <button id="save-memo" class="primary-action" type="submit">메모 저장</button>
-      </div>
-    </form>
-  </dialog>
-  <script src="/admin/reservations.js"></script>
-</body>
+
+      <p id="result-dialog-message" class="dialog-content"></p>
+
+      <form method="dialog" class="dialog-actions">
+        <button class="primary-action" type="submit" autofocus>확인</button>
+      </form>
+    </dialog>
+
+    <script src="/admin/reservations.js"></script>
+  </body>
 </html>

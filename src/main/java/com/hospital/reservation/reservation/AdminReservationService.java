@@ -90,6 +90,7 @@ public class AdminReservationService {
 
     private Sort createSort(String sortBy, Sort.Direction direction) {
         Sort sort = switch (sortBy) {
+            case "createdAt" -> Sort.by(direction, "createdAt");
             case "department" -> Sort.by(direction, "doctor.department");
             case "doctor" -> Sort.by(direction, "doctor.name");
             case "status" -> Sort.by(direction, "status");

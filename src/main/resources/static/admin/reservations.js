@@ -212,22 +212,45 @@ async function loadReservations() {
   }
 }
 
+const resultDialog = document.getElementById('result-dialog');
+const resultDialogTitle = document.getElementById('result-dialog-title');
+const resultDialogMessage = document.getElementById('result-dialog-message');
+
+function showResultDialog(title, message) {
+  resultDialogTitle.textContent = title;
+  resultDialogMessage.textContent = message;
+  resultDialog.showModal();
+}
+
 async function updateStatus(reservationId, status, button) {
   button.disabled = true;
   button.textContent = '저장 중…';
+
   try {
-    const response = await fetch(`/api/admin/reservations/${reservationId}/status`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
-      body: JSON.stringify({ status })
-    });
+    const response = await fetch(
+      `/api/admin/reservations/${reservationId}/status`,
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
+        body: JSON.stringify({ status })
+      }
+    );
+
     ensureAuthenticated(response);
     const body = await response.json();
-    if (!response.ok) throw new Error(body.message || '예약 상태를 변경하지 못했습니다.');
-    await loadReservations();
+
+    if (!response.ok) {
+      throw new Error(body.message || '예약 상태를 변경하지 못했습니다.');
+    }
+
+    showResultDialog('저장 완료', '예약 상태를 변경했습니다.');
   } catch (error) {
-    listMessage.className = 'error';
-    listMessage.textContent = error.message;
+    showResultDialog(
+      '저장 결과 확인',
+      error.message || '저장 결과를 확인하지 못했습니다. 예약 목록을 확인해 주세요.'
+    );
+  } finally {
+    await loadReservations();
     button.disabled = false;
     button.textContent = '상태 저장';
   }
@@ -260,9 +283,9 @@ async function updateAdminMemo() {
     memoDialog.close();
     memoReservationId = null;
     await loadReservations();
-    listMessage.textContent = '관리자 메모를 저장했습니다.';
+    showResultDialog('저장 완료', '관리자 메모를 저장했습니다.');
   } catch (error) {
-    memoMessage.textContent = error.message;
+    showResultDialog('저장 결과 확인',error.message || '저장 결과를 확인하지 못했습니다. 다시 조회해 주세요.');
   } finally {
     saveMemoButton.disabled = false;
     saveMemoButton.textContent = '메모 저장';

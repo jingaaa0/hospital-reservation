@@ -212,6 +212,16 @@ dialogs.forEach((dialog) => {
 
 // ------------------------------------------------------------------------------------------------------------------------
 
+const resultDialog = document.getElementById('result-dialog');
+const resultDialogTitle = document.getElementById('result-dialog-title');
+const resultDialogMessage = document.getElementById('result-dialog-message');
+
+function showResultDialog(title, message) {
+  resultDialogTitle.textContent = title;
+  resultDialogMessage.textContent = message;
+  resultDialog.showModal();
+}
+
 // FORM 전송 기능
 async function submitForm(form, endpoint) {
   const message = form.querySelector('.form-message');
@@ -235,8 +245,7 @@ async function submitForm(form, endpoint) {
     });
     const body = await response.json();
     if (!response.ok) throw new Error(body.message || '입력 내용을 다시 확인해 주세요.');
-    message.classList.add('success');
-    message.textContent = body.message;
+    showResultDialog('접수 완료', body.message);
     form.reset();
     if (endpoint.includes('reservations')) {
       resetDoctorOptions();
@@ -245,7 +254,7 @@ async function submitForm(form, endpoint) {
       updateAvailableTimeSlots();
     }
   } catch (error) {
-    message.textContent = error.message || '전송에 실패했습니다. 잠시 후 다시 시도해 주세요.';
+    showResultDialog('접수 실패', error.message || '전송에 실패했습니다. 잠시 후 다시 시도해 주세요.');
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = endpoint.includes('inquiries') ? '문의 전송하기' : '예약 신청하기';

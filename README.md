@@ -39,6 +39,7 @@
 
 기본 포트 8080 기준입니다.
 
+- 고객 홈페이지: http://localhost:8080
 - 관리자 로그인: http://localhost:8080/admin/login
 - 관리자 예약 관리: http://localhost:8080/admin/reservations
 
